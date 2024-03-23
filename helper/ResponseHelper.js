@@ -1,0 +1,10 @@
+module.exports={
+    RenderRes:function(res,success,data){
+        if(success){
+            res.status(200).send({success:success,data:data})
+        }
+        else{
+            res.status(404).send({success:success,data:data})
+        }
+    }
+}
