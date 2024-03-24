@@ -17,7 +17,4 @@ var categorySchema = new mongoose.Schema({
         default: false
     }
 }, { timestamps: true,versionKey:false })
-categorySchema.virtual('withDrink',{ref:'drink',localField:"_id",foreignField:"category"})
-categorySchema.set("toJSON",{virtuals:true})
-categorySchema.set("toObject",{virtuals:true})
 module.exports = new mongoose.model('category', categorySchema);
