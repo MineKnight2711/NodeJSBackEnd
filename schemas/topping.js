@@ -1,11 +1,13 @@
 var mongoose = require("mongoose");
 const toppingSchema = new mongoose.Schema({
-    topping_name: { type: String, required: true },
-    toppingPrice: { type: Number, required: true },
-    drink: { type: Schema.Types.ObjectId, ref: 'drink', required: true },
+    toppingName: { type: String, required: true },
+    imageUrl: { type: String },
+    price: { type: Number, required: true },
+    // drink: { type: mongoose.Types.ObjectId, ref: 'drink'},
     isDeleted: {type: Boolean,default: false}
 }, { timestamps: true,versionKey:false });
-drinkSchema.virtual('drink',{ref:'drink',localField:"_id",foreignField:"topping"})
-drinkSchema.set("toJSON",{virtuals:true})
-drinkSchema.set("toObject",{virtuals:true})
+toppingSchema.virtual('drink_toppings',{ref:'drink',localField:"_id",foreignField:"topping"})
+//Mở dòng dưới ra thì sẽ có 2 khóa khi get topping
+toppingSchema.set("toJSON",{virtuals:true})
+toppingSchema.set("toObject",{virtuals:true})
 module.exports = new mongoose.model('topping', toppingSchema);
