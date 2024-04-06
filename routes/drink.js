@@ -9,15 +9,24 @@ const upload = multer({
 })
 router.get('/', async function (req, res, next) {
   
-    let categories = await drinkModel
+    let drinks = await drinkModel
         .find({})
         .populate('category', 'categoryName imageUrl')
         .populate('toppings', 'toppingName imageUrl')
         .lean()
         .exec();
-    ResHelper.RenderRes(res, true, categories)
+    ResHelper.RenderRes(res, true, drinks)
   });
+router.get('/get-by-category/:id', async function (req, res, next) {
 
+    let drinks = await drinkModel
+        .find({category:req.params.id})
+        .populate('category', 'categoryName imageUrl')
+        .populate('toppings', 'toppingName imageUrl')
+        .lean()
+        .exec();
+    ResHelper.RenderRes(res, true, drinks)
+});
 router.post('/', upload.single('file'), async (req, res) => {
 try {
     // Check if a file was uploaded

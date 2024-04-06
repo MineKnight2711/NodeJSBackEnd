@@ -40,7 +40,7 @@ router.put('/:id', async function (req, res, next) {
       (req.params.id, req.body, {
         new: true
       }).exec()
-    ResHelper.RenderRes(res, true, book);
+    ResHelper.RenderRes(res, true, category);
   } catch (error) {
     ResHelper.RenderRes(res, false, error)
   }
