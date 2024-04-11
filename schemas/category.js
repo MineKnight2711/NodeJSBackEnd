@@ -10,7 +10,7 @@ var categorySchema = new mongoose.Schema({
     {
         type: String,
         required: false,
-        unique: true
+        unique: false
     },
     isDeleted: {
         type: Boolean,

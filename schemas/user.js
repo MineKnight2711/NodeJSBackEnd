@@ -19,6 +19,9 @@ var userSchema = new mongoose.Schema({
         default: true
     },
     email: String,
+    imageUrl: {
+        type: String,
+    },
     resetPasswordToken: String,
     resetPasswordExp: String
 }, { timestamps: true })

@@ -81,7 +81,7 @@ router.post("/forgotPassword",userValidator.checkIsEmail(), async function (req,
     let token = user.genTokenResetPassword();
     await user.save()
     try {
-      let url = `http://${config.hostName}/api/v1/auth/ResetPassword/${token}`;
+      let url = `http://127.0.0.1:3000/resetPassword/?token=${token}`;
       let message = `click zo url de reset passs: ${url}`
       sendmail(message, user.email)
       ResHelper.RenderRes(res, true, "Thanh cong");

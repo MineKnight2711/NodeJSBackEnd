@@ -18,8 +18,32 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'login.html'));
+});
 
+app.get('/register', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'register.html'));
+});
+
+app.get('/forgotPassword', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'forgotPassword.html'));
+});
+
+app.get('/resetPassword', (req, res) => {
+  const token = req.query.token; // Retrieve the token from the query parameters
+
+  // If token is present and valid, send the reset password page
+  if (token) {
+    res.sendFile(path.join(__dirname, 'views', 'resetPassword.html'));
+  } else {
+    // If token is not present or invalid, handle the error (e.g., show a 404 page)
+    res.status(404).send('404 Not Found');
+  }
+});
 app.use('/api/v1', require('./routes/index'));
+const authRoutes = require('./routes/auth');
+app.use('/api/v1/auth', authRoutes);
 
 mongoose.connect("mongodb://127.0.0.1:27017/BrosMilkTea")
 .then(() => {

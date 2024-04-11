@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var drinkModel = require('../schemas/drink')
+var drinkModel = require('../schemas/drink');
+var toppingModel = require('../schemas/topping');
 var ResHelper = require('../helper/ResponseHelper');
 var uploadFile = require('../services/firebase');
 const multer = require('multer')
@@ -12,7 +13,7 @@ router.get('/', async function (req, res, next) {
     let drinks = await drinkModel
         .find({})
         .populate('category', 'categoryName imageUrl')
-        .populate('toppings', 'toppingName imageUrl')
+        .populate('toppings', 'toppingName imageUrl price')
         .lean()
         .exec();
     ResHelper.RenderRes(res, true, drinks)
@@ -22,7 +23,7 @@ router.get('/get-by-category/:id', async function (req, res, next) {
     let drinks = await drinkModel
         .find({category:req.params.id})
         .populate('category', 'categoryName imageUrl')
-        .populate('toppings', 'toppingName imageUrl')
+        .populate('toppings', 'toppingName imageUrl price')
         .lean()
         .exec();
     ResHelper.RenderRes(res, true, drinks)
@@ -42,6 +43,13 @@ try {
     // Call the uploadImage function
     const downloadUrl = await uploadFile.uploadImage(fileBuffer, savePath, objectName);
     try {
+        const toppings = Array.isArray(req.body.toppings) ? req.body.toppings : [req.body.toppings];
+        const existingToppings = await toppingModel.find({ _id: { $in: toppings } });
+
+        if (existingToppings.length !== toppings.length) {
+            ResHelper.RenderRes(res, false, "SomeToppingNotFound")
+        }    
+
         var newbook = new drinkModel({
             drinkName: req.body.drinkName,
             description:req.body.description,
