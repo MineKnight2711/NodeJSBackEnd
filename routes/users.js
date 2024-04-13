@@ -40,6 +40,7 @@ router.post('/', userValidator.checkChain(), async function (req, res, next) {
     ResHelper.RenderRes(res, false, error)
   }
 });
+
 router.put('/:id', async function (req, res, next) {
   try {
     let user = await userModel.findById

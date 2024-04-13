@@ -5,7 +5,7 @@ const config = require('../configs/config');
 var crypto = require('crypto');
 
 var userSchema = new mongoose.Schema({
-    username: {
+    fullName: {
         type: String,
         unique: true
     },
@@ -20,6 +20,15 @@ var userSchema = new mongoose.Schema({
     },
     email: String,
     imageUrl: {
+        type: String,
+    },
+    phoneNumber: {
+        type: String,
+    },
+    address: {
+        type: String,
+    },
+    gender: {
         type: String,
     },
     resetPasswordToken: String,
@@ -46,11 +55,11 @@ userSchema.methods.getJWT = function () {
     return token;
 }
 
-userSchema.statics.GetCre = async function (username, password) {
-    if (!username || !password) {
+userSchema.statics.GetCre = async function (email, password) {
+    if (!email || !password) {
         return { error: "phai dien day du username va password" };
     }
-    var user = await this.findOne({ username: username });
+    var user = await this.findOne({ email: email });
     if (!user) {
         return { error: "user hoac password sai" };
     }

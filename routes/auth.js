@@ -29,7 +29,7 @@ router.post('/logout', checkLogin, function (req, res, next) {
 
 
 router.post('/login', async function (req, res, next) {
-  var result = await userModel.GetCre(req.body.username, req.body.password);
+  var result = await userModel.GetCre(req.body.email, req.body.password);
   console.log(result);
   if (result.error) {
     ResHelper.RenderRes(res, false, result.error);
@@ -56,9 +56,13 @@ router.post('/register', userValidator.checkChain(), async function (req, res, n
   }
   try {
     var newUser = new userModel({
-      username: req.body.username,
+      fullName: req.body.fullName,
       password: req.body.password,
       email: req.body.email,
+      address: req.body.address,
+      phoneNumber: req.body.phoneNumber,
+      gender: req.body.gender,
+      imageUrl:config.imageUrl,
       role: ["user"]
     })
     await newUser.save();
