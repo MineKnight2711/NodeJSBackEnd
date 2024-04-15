@@ -57,10 +57,27 @@ router.post('/', upload.single('file'), async (req, res) => {
       ResHelper.RenderRes(res,false,error)
   }
   });
+
+  
 router.put('/:id', async function (req, res, next) {
   try {
     let topping = await toppingModel.findByIdAndUpdate
       (req.params.id, req.body, {
+        new: true
+      }).exec()
+    ResHelper.RenderRes(res, true, topping);
+  } catch (error) {
+    ResHelper.RenderRes(res, false, error)
+  }
+});
+
+///Delete
+router.delete('/:id', async function (req, res, next) {
+  try {
+    let topping = await toppingModel.findByIdAndUpdate
+      (req.params.id, {
+        isDeleted: true
+      }, {
         new: true
       }).exec()
     ResHelper.RenderRes(res, true, topping);

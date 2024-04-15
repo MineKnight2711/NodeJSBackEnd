@@ -9,6 +9,15 @@ router.get('/:userId', async function (req, res, next) {
   ResHelper.RenderRes(res, true, order)
 });
 
+router.get('/id/:id', async function (req, res, next) {
+  try {
+    let order = await orderModel.find({ _id: req.params.id }).exec();
+    ResHelper.RenderRes(res, true, order)
+  } catch (error) {
+    ResHelper.RenderRes(res, false, error)
+  }
+})
+
 router.post('/',checkLogin, async function (req, res, next) {
     try {
       const { user, order_date, total_amount, order_items } = req.body;
@@ -25,6 +34,23 @@ router.post('/',checkLogin, async function (req, res, next) {
       ResHelper.RenderRes(res, true, newOrder);
     } catch (error) {
       ResHelper.RenderRes(res, false, error);
+    }
+  });
+
+
+  ////Delete
+
+  router.delete('/:id', async function (req, res, next) {
+    try {
+      let order = await orderModel.findByIdAndUpdate
+        (req.params.id, {
+          isDelete: true
+        }, {
+          new: true
+        }).exec()
+      ResHelper.RenderRes(res, true, order);
+    } catch (error) {
+      ResHelper.RenderRes(res, false, error)
     }
   });
 module.exports = router;
