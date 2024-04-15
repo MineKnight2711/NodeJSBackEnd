@@ -5,18 +5,19 @@ var ResHelper = require('../helper/ResponseHelper');
 var checkLogin = require('../middlewares/checklogin')
 
 router.get('/:userId', async function (req, res, next) {
-  let order = await orderModel.find({user:req.params.userId}).exec();
+  let order = await orderModel.find({user:req.params.userId})
+  .populate('cart_items', 'drink size toppings quantity')
+  .exec();
   ResHelper.RenderRes(res, true, order)
 });
 
-router.post('/',checkLogin, async function (req, res, next) {
+router.post('/', async function (req, res, next) {
     try {
-      const { user, order_date, total_amount, order_items } = req.body;
+      const { user, order_date, order_items } = req.body;
   
       const newOrder = new orderModel({
         user,
         order_date,
-        total_amount,
         order_items,
       });
   

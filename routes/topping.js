@@ -26,6 +26,14 @@ router.get('/:id', async function (req, res, next) {
     ResHelper.RenderRes(res, false, error)
   }
 });
+router.get('/get-by-drink/:id', async function (req, res, next) {
+  try {
+    let book = await toppingModel.find({ _id: req.params.id }).exec();
+    ResHelper.RenderRes(res, true, book)
+  } catch (error) {
+    ResHelper.RenderRes(res, false, error)
+  }
+});
 router.post('/', upload.single('file'), async (req, res) => {
   try {
       // Check if a file was uploaded
