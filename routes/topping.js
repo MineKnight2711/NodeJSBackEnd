@@ -58,13 +58,14 @@ router.post('/', upload.single('file'), async (req, res) => {
   }
   });
 
-  
-router.put('/:id', async function (req, res, next) {
+
+router.put('/:id', upload.single('file'), async function (req, res, next) {
   try {
     let topping = await toppingModel.findByIdAndUpdate
       (req.params.id, req.body, {
         new: true
-      }).exec()
+      }).exec();
+      console.log(req.body);
     ResHelper.RenderRes(res, true, topping);
   } catch (error) {
     ResHelper.RenderRes(res, false, error)
