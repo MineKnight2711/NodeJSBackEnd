@@ -28,4 +28,21 @@ router.post('/', async function (req, res, next) {
       ResHelper.RenderRes(res, false, error);
     }
   });
+
+
+  ////Delete
+
+  router.delete('/:id', async function (req, res, next) {
+    try {
+      let order = await orderModel.findByIdAndUpdate
+        (req.params.id, {
+          isDelete: true
+        }, {
+          new: true
+        }).exec()
+      ResHelper.RenderRes(res, true, order);
+    } catch (error) {
+      ResHelper.RenderRes(res, false, error)
+    }
+  });
 module.exports = router;

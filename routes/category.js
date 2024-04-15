@@ -16,8 +16,8 @@ router.get('/', async function (req, res, next) {
 });
 router.get('/:id', async function (req, res, next) {
   try {
-    let book = await bookModel.find({ _id: req.params.id }).exec();
-    ResHelper.RenderRes(res, true, book)
+    let category = await categoryModel.find({ _id: req.params.id }).exec();
+    ResHelper.RenderRes(res, true, category)
   } catch (error) {
     ResHelper.RenderRes(res, false, error)
   }
@@ -38,6 +38,21 @@ router.put('/:id', async function (req, res, next) {
   try {
     let category = await categoryModel.findByIdAndUpdate
       (req.params.id, req.body, {
+        new: true
+      }).exec()
+    ResHelper.RenderRes(res, true, category);
+  } catch (error) {
+    ResHelper.RenderRes(res, false, error)
+  }
+});
+
+///Delete
+router.delete('/:id', async function (req, res, next) {
+  try {
+    let category = await categoryModel.findByIdAndUpdate
+      (req.params.id, {
+        isDeleted: true
+      }, {
         new: true
       }).exec()
     ResHelper.RenderRes(res, true, category);
